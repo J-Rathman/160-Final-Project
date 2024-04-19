@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/*  Header  */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 80px;
+    background-color: black;
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+header .header_links {
+    list-style: none;
+}
+
+header li {
+    float: left;
+}
+
+header li a {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding: 0 28px;
+    color: white;
+}
+
+/*  Footer  */
+footer {
+    background-color: black;
+    height: 80px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+}
+
