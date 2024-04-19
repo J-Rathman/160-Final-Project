@@ -4,6 +4,10 @@
     box-sizing: border-box;
 }
 
+body {
+    font-family: 'Times New Roman', Times, serif;
+}
+
 /*  Header  */
 header {
     position: fixed;
@@ -28,7 +32,7 @@ header li a {
     display: block;
     text-align: center;
     text-decoration: none;
-    padding: 0 28px;
+    margin: 0 1.4em;
     color: white;
 }
 

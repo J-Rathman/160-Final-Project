@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles/mainstyles.css') }}">
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='images/icon.png') }}">
     <title>Exam Management</title>
 </head>
 <body>
     <header>
         <ul class="header_links">
             <li><a href="/">HOME</a></li>
-            <li><a href="#">LINK</a></li>
-            <li><a href="#">LINK</a></li>
+            <li><a href="/login">LOGIN</a></li>
+            <li><a href="/register">REGISTER</a></li>
+            <li><a href="/take_a_test">TAKE A TEST</a></li>
+            <li><a href="/manage_tests">MANAGE TESTS</a></li>
         </ul>
     </header>
 
