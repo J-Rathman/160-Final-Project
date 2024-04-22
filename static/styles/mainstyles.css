@@ -45,7 +45,7 @@ header li a {
     display: block;
     text-align: center;
     text-decoration: none;
-    margin: 0 1.4em;
+    margin: 0.6em 1.4em;
     color: white;
 }
 
@@ -60,34 +60,58 @@ footer {
 
 
 /* Index page */
-main .welcome-msg {
-    background-color: white;
-    color: black;
-    width: 20%;
-    min-width: 300px;
-    text-align: center;
-    border: 2px solid black;
-    border-radius: 5px;
-    margin-top: 10%;
-    padding: 0.5em;
-    height: 20%;
-    min-height: 150px;
-}
-
 main .index-btns {
-    margin: 3% 0 5%;
+    width: 100%;
+    margin: 5% 0 10%;
     display: flex;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
-.index-btns button {
-    margin: 10%;
-    padding: 10%;
-    text-wrap: nowrap;
+.index-btns figure {
     background-color: white;
-    border: 2px solid black;
+    padding: 8%;
+    border-top: 3px solid black;
+    border-bottom: 3px solid black;
+}
+
+.index-btns figure:hover {
+    background-color: gray;
+}
+
+#register-btn {
+    background-image: url(../images/register-icon.png);
+}
+
+#login-btn {
+    background-image: url(../images/login-icon.png);
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-left: 3px solid black;
+}
+
+#test-btn {
+    background-image: url(../images/icon.png);
+}
+
+#manage-btn {
+    background-image: url(../images/manage-icon.png);
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+
+#login-btn, #test-btn, #manage-btn, #register-btn {
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-right: 3px solid black;
+}
+
+.index-btns figure p {
+    color: white;
+    background-color: black;
+    padding: 20px;
     border-radius: 5px;
-    transition: background-color 0.3s;
 }
 
 .index-btns button:hover {
@@ -116,7 +140,7 @@ main .register-form, main .login-form {
     width: 300px;
 }
 
-.form-header {
+.form-header, .welcome-msg {
     background-color: white;
     width: 100%;
     text-align: center;
