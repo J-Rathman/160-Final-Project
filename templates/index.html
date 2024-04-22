@@ -1,5 +1,13 @@
 {% extends "base.html" %}
 {% block body %}
-    
+    <main>
+        <h1 class="welcome-msg">Hello! Please Choose an Option Below:</h1>
 
+        <div class="index-btns">
+            <button onclick="window.location.href='/login'">Login</button>
+            <button onclick="window.location.href='/accounts'">Register</button>
+            <button onclick="window.location.href='/take_a_test'">Take a Test</button>
+            <button onclick="window.location.href='/manage_tests'">Manage Tests</button>
+        </div>
+    </main>
 {% endblock %}
