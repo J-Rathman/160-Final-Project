@@ -24,8 +24,18 @@ def get_login_template():
 
 @app.route("/login", methods=["POST"])
 def login():
-    session["username"] = request.form.get("email/username")
-    return redirect("/")
+    try:
+        user = conn.execute(
+            text(f"SELECT username FROM accounts WHERE password = :password AND username = :email_or_username OR email = :email_or_username"),
+            request.form
+        )
+        user = "".join(user.first())
+        session["username"] = user
+        return redirect("/")
+    except Exception as e:
+        error = e.orig.args[1]
+        print(error)
+        return render_template("login.html", error=error)
 
 
 @app.route("/logout", methods=["GET"])
@@ -44,7 +54,7 @@ def register():
     if request.form.get("password") == request.form.get("password-confirm"):
         try:
             conn.execute(
-                text(f"INSERT INTO accountsxp (email, username, password, acc_type) VALUES (:email, :username, :password, :radio)"),
+                text(f"INSERT INTO accounts (email, username, password, acct_type) VALUES (:email, :username, :password, :radio)"),
                 request.form
             )
             conn.commit()
