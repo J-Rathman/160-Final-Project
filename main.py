@@ -60,12 +60,12 @@ def register():
 
 @app.route("/take_a_test", methods=["GET"])
 def get_test_taking_template():
-    return render_template("take_test.html")
+    return render_template("take_test.html", loggedin=session.get("username"))
 
 
 @app.route("/manage_tests", methods=["GET"])
 def get_manage_tests_template():
-    return render_template("manage_tests.html")
+    return render_template("manage_tests.html", loggedin=session.get("username"))
 
 
 if __name__ == "__main__":
