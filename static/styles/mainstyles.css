@@ -54,8 +54,27 @@ footer {
     background-color: black;
     height: 80px;
     width: 100%;
-    z-index: 3;
     border-top: 1px solid white;
+    display: flex;
+    justify-content: space-between;
+    padding: 2% 1%;
+}
+
+footer span, footer ul a {
+    color: lightgray;
+    font-size: small;
+    font-weight: 700;
+}
+
+footer ul {
+    list-style: none;
+}
+
+footer ul li {
+    display: block;
+    float: left;
+    text-align: center;
+    margin: 0 1.4em;
 }
 
 
@@ -77,6 +96,7 @@ main .index-btns {
 
 .index-btns figure:hover {
     background-color: gray;
+    cursor: pointer;
 }
 
 #register-btn {
@@ -109,7 +129,7 @@ main .index-btns {
 
 .index-btns figure p {
     color: white;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 20px;
     border-radius: 5px;
 }
@@ -134,10 +154,18 @@ main .register-form, main .login-form {
     border-radius: 5px;
 }
 
+main .login-form {
+    margin-bottom: 15%;
+}
+
 input[type="text"], input[type="submit"], input[type="password"] {
     padding: 20px;
     margin: 1em;
     width: 300px;
+}
+
+input[type="submit"]:hover, input[type="radio"]:hover, .radios label:hover {
+    cursor: pointer;
 }
 
 .welcome-msg, .form-header, .success-header, .error-header {
