@@ -49,6 +49,10 @@ header li a, header li span {
     color: white;
 }
 
+header li span:hover {
+    cursor: default;
+}
+
 /*  Footer  */
 footer {
     background-color: black;
