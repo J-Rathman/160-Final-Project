@@ -68,9 +68,16 @@ def register():
         return render_template("register.html", error="Passwords do not match", success=None)
 
 
-@app.route("/take_a_test", methods=["GET"])
+@app.route("/tests", methods=["GET"])
 def get_test_taking_template():
-    return render_template("take_test.html", loggedin=session.get("username"))
+    tests = conn.execute(text("SELECT * FROM tests"))
+    return render_template("test_list.html", loggedin=session.get("username"), tests=tests)
+
+
+@app.route("/tests/<test>")
+def take_test(test):
+    questions = conn.execute(text(f"SELECT question FROM test_questions WHERE test_name = {test}"))
+    return render_template("testing.html", test=test, questions=questions, loggedin=session.get("username"))
 
 
 @app.route("/manage_tests", methods=["GET"])
