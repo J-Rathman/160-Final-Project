@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block body %}
+    <main>
+        <div class="test-card">
+        {% if acct_type == 'teacher' %}
+
+
+
+        {% else %}
+            <h2>Access denied</h2>
+        {% endif %}
+        </div>
+    </main>
+{% endblock %}

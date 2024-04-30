@@ -7,18 +7,19 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 #Needs password below
-conn_str = "mysql://root:PASSWORD@localhost/160finaldb"
+conn_str = "mysql://root:localUnkers1!@localhost/160finaldb"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
 
 @app.route("/")
 def get_index():
-    return render_template("index.html", loggedin=session.get("username"))
+    return render_template("index.html", loggedin=session.get("username"), success=None)
 
 
 @app.route("/login", methods=["GET"])
 def get_login_template():
+    session["username"] = None
     return render_template("login.html")
 
 
@@ -46,6 +47,7 @@ def logout():
 
 @app.route("/register", methods=["GET"])
 def get_register_template():
+    session["username"] = None
     return render_template("register.html")
 
 
@@ -70,8 +72,13 @@ def register():
 
 @app.route("/tests", methods=["GET"])
 def get_test_taking_template():
+    if session.get("username"):
+        acct_type = conn.execute(text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
+        acct_type = "".join(acct_type)
+    else:
+        acct_type = None
     tests = conn.execute(text("SELECT * FROM tests"))
-    return render_template("test_list.html", loggedin=session.get("username"), tests=tests)
+    return render_template("test_list.html", loggedin=session.get("username"), tests=tests, acct_type=acct_type)
 
 
 @app.route("/tests/<test>")
@@ -82,7 +89,46 @@ def take_test(test):
 
 @app.route("/manage_tests", methods=["GET"])
 def get_manage_tests_template():
-    return render_template("manage_tests.html", loggedin=session.get("username"))
+    if session.get("username"):
+        acct_type = conn.execute(text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
+        acct_type = "".join(acct_type)
+    else:
+        acct_type = None
+    tests = conn.execute(text("SELECT * FROM tests"))
+    return render_template("manage_tests.html", loggedin=session.get("username"), acct_type=acct_type, tests=tests, success=None)
+
+
+@app.route("/update_tests/<test>", methods=["GET"])
+def get_update_test_template(test):
+    if session.get("username"):
+        acct_type = conn.execute(text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
+        acct_type = "".join(acct_type)
+    else:
+        acct_type = None
+    return render_template("update.html", loggedin=session.get("username"), acct_type=acct_type, test=test)
+
+
+@app.route("/create_new_test", methods=["GET"])
+def get_creation_template():
+    if session.get("username"):
+        acct_type = conn.execute(text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
+        acct_type = "".join(acct_type)
+    else:
+        acct_type = None
+    return render_template("create_test.html", acct_type=acct_type, loggedin=session.get("username"))
+
+
+@app.route("/create_new_test", methods=["POST"])
+def create_test():
+    conn.execute(
+        text(f"INSERT INTO tests (created_by, test_name, date_created, num_questions) "
+             f"VALUES ('{session.get("username")}', '{request.form.get("test_name")}',"
+             f" CURDATE(), {int(request.form.get('num_questions'))})"))
+    for i in range(0, int(request.form.get("num_questions"))):
+        conn.execute(text(f"INSERT INTO test_questions (question, test_name)"
+                          f"VALUES ('{request.form.get(f'question-{i + 1}')}', '{request.form.get("test_name")}')"))
+    conn.commit()
+    return render_template("index.html", loggedin=session.get("username"), success="Test created successfully!")
 
 
 if __name__ == "__main__":
