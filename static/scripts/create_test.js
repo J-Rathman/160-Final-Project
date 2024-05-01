@@ -12,6 +12,7 @@ function updateForm(event) {
         let newQuestion = document.createElement("input");
         newQuestion.type = "text";
         newQuestion.setAttribute("required", "");
+        newQuestion.setAttribute("autocomplete", "off");
         newQuestion.name = `question-${i + 1}`;
         form.appendChild(newLabel);
         form.appendChild(newQuestion); 

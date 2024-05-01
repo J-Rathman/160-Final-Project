@@ -32,6 +32,10 @@ def login():
         )
         user = "".join(user.first())
         session["username"] = user
+        acct_type = conn.execute(
+            text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
+        acct_type = "".join(acct_type)
+        session["acct_type"] = acct_type
         return redirect("/")
     except Exception as e:
         error = e.orig.args[1]
@@ -42,6 +46,7 @@ def login():
 @app.route("/logout", methods=["GET"])
 def logout():
     session["username"] = None
+    session["acct_type"] = None
     return redirect("/")
 
 
@@ -61,6 +66,7 @@ def register():
             )
             conn.commit()
             session["username"] = request.form.get("username")
+            session["acct_type"] = request.form.get("radio")
             return render_template("register.html", error=None, success="Account created successfully!", loggedin=session.get("username"))
         except Exception as e:
             error = e.orig.args[1]
@@ -78,57 +84,47 @@ def get_test_taking_template():
     else:
         acct_type = None
     tests = conn.execute(text("SELECT * FROM tests"))
-    return render_template("test_list.html", loggedin=session.get("username"), tests=tests, acct_type=acct_type)
+    return render_template("test_list.html", loggedin=session.get("username"), tests=tests, acct_type=session.get("acct_type"))
 
 
 @app.route("/tests/<test>")
 def take_test(test):
     questions = conn.execute(text(f"SELECT question FROM test_questions WHERE test_name = {test}"))
-    return render_template("testing.html", test=test, questions=questions, loggedin=session.get("username"))
+    return render_template("testing.html", test=test, questions=questions, loggedin=session.get("username"), acct_type=session.get("acct_type"))
 
 
 @app.route("/manage_tests", methods=["GET"])
 def get_manage_tests_template():
-    if session.get("username"):
-        acct_type = conn.execute(text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
-        acct_type = "".join(acct_type)
-    else:
-        acct_type = None
     tests = conn.execute(text("SELECT * FROM tests"))
-    return render_template("manage_tests.html", loggedin=session.get("username"), acct_type=acct_type, tests=tests, success=None)
+    return render_template("manage_tests.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), tests=tests, success=None)
 
 
 @app.route("/update_tests/<test>", methods=["GET"])
 def get_update_test_template(test):
-    if session.get("username"):
-        acct_type = conn.execute(text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
-        acct_type = "".join(acct_type)
-    else:
-        acct_type = None
-    return render_template("update.html", loggedin=session.get("username"), acct_type=acct_type, test=test)
+    return render_template("update.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), test=test)
 
 
 @app.route("/create_new_test", methods=["GET"])
 def get_creation_template():
-    if session.get("username"):
-        acct_type = conn.execute(text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
-        acct_type = "".join(acct_type)
-    else:
-        acct_type = None
-    return render_template("create_test.html", acct_type=acct_type, loggedin=session.get("username"))
+    return render_template("create_test.html", error=None, acct_type=session.get("acct_type"), loggedin=session.get("username"))
 
 
 @app.route("/create_new_test", methods=["POST"])
 def create_test():
-    conn.execute(
-        text(f"INSERT INTO tests (created_by, test_name, date_created, num_questions) "
-             f"VALUES ('{session.get("username")}', '{request.form.get("test_name")}',"
-             f" CURDATE(), {int(request.form.get('num_questions'))})"))
-    for i in range(0, int(request.form.get("num_questions"))):
-        conn.execute(text(f"INSERT INTO test_questions (question, test_name)"
-                          f"VALUES ('{request.form.get(f'question-{i + 1}')}', '{request.form.get("test_name")}')"))
-    conn.commit()
-    return render_template("index.html", loggedin=session.get("username"), success="Test created successfully!")
+    try:
+        conn.execute(
+            text(f"INSERT INTO tests (created_by, test_name, date_created, num_questions) "
+                 f"VALUES ('{session.get("username")}', '{request.form.get("test_name")}',"
+                 f" CURDATE(), {int(request.form.get('num_questions'))})"))
+        for i in range(0, int(request.form.get("num_questions"))):
+            conn.execute(text(f"INSERT INTO test_questions (question, test_name)"
+                              f"VALUES ('{request.form.get(f'question-{i + 1}')}', '{request.form.get("test_name")}')"))
+        conn.commit()
+        return render_template("index.html", loggedin=session.get("username"), success="Test created successfully!")
+    except Exception as e:
+        error = e.orig.args[1]
+        print(error)
+        return render_template("create_test.html", error=error)
 
 
 if __name__ == "__main__":
