@@ -20,6 +20,7 @@ def get_index():
 @app.route("/login", methods=["GET"])
 def get_login_template():
     session["username"] = None
+    session["acct_type"] = None
     return render_template("login.html")
 
 
@@ -53,6 +54,7 @@ def logout():
 @app.route("/register", methods=["GET"])
 def get_register_template():
     session["username"] = None
+    session["acct_type"] = None
     return render_template("register.html")
 
 

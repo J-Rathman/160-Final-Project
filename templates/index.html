@@ -6,12 +6,21 @@
         {% endif %}
         <h1 class="welcome-msg">Hello! Please Choose an Option Below:</h1>
         <div class="index-btns">
-            <figure id="login-btn" onclick="window.location.href='/login'">
-                <p>Login</p>
-            </figure>
-            <figure id="register-btn" onclick="window.location.href='/register'">
-                <p>Register</p>
-            </figure>
+            {% if loggedin %}
+                <figure id="login-btn" onclick="window.location.href='/login'">
+                    <p>Switch accounts</p>
+                </figure>
+                <figure id="register-btn" onclick="window.location.href='/register'">
+                    <p>Create account</p>
+                </figure>
+            {% else %}
+                <figure id="login-btn" onclick="window.location.href='/login'">
+                    <p>Login</p>
+                </figure>
+                <figure id="register-btn" onclick="window.location.href='/register'">
+                    <p>Register</p>
+                </figure>
+            {% endif %}
             <figure id="test-btn" onclick="window.location.href='/take_a_test'">
                 <p>Take a test</p>
             </figure>
