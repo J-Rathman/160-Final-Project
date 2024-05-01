@@ -1,5 +1,22 @@
 {% extends "base.html" %}
 {% block body %}
-    
-
+    <main>
+        <h1 class="form-header">Manage tests</h1>
+        <div class="test-card">
+            {% if acct_type == 'teacher' %}
+                <button onclick="window.location.href='/create_new_test'">Create a new test</button>
+                {% if tests %}
+                {% for test in tests %}
+                    <a href="/tests/'{{ test['test_name'] }}'">{{ test['test_name'] }} - Posted by: {{ test['created_by'] }} on
+                        {{ test['date_created'] }}</a>
+                    <a href="/update_tests/'{{ test['test_name'] }}'">Modify {{ test['test_name'] }}</a>                         
+                {% endfor %}
+                {% else %}
+                <h2>No tests available</h2>
+                {% endif %}
+            {% else %}
+                <h2>You need to login or register with a teacher account to manage tests</h2>           
+            {% endif %}
+        </div>
+    </main>
 {% endblock %}
