@@ -44,7 +44,6 @@ header li {
 header li a, header li span {
     display: block;
     text-align: center;
-    text-decoration: none;
     margin: 0.6em 1.4em;
     color: white;
 }
@@ -94,7 +93,7 @@ main .index-btns {
 
 .index-btns figure {
     background-color: white;
-    padding: 8%;
+    padding: 7%;
     border-top: 3px solid black;
     border-bottom: 3px solid black;
 }
