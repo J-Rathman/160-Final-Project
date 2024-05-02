@@ -1,14 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
     <main>
-        <div class="test-card">
-        {% if acct_type == 'teacher' %}
-
-
-
+        {% if loggedin == creator %}
+        <form method="POST" class="test-card">
+            <input type="text" placeholder="Test name..." class="question" name="test-name" value="{{ test['test_name'] }}" required>
+            {% for question in questions %}
+                <p class="question">{{ loop.index }}.</p>
+                <textarea placeholder="Question..." name="question-{{ loop.index }}" required autocomplete="off">{{ question|join('') }}</textarea>
+            {% endfor %}
+            <input type="submit" value="Apply changes">
         {% else %}
-            <h2>Access denied</h2>
+            <p class="error-header">You do not have permission to edit this test</p>
         {% endif %}
-        </div>
+        </form>
     </main>
 {% endblock %}
