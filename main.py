@@ -103,7 +103,29 @@ def get_manage_tests_template():
 
 @app.route("/update_tests/<test>", methods=["GET"])
 def get_update_test_template(test):
-    return render_template("update.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), test=test)
+    creator = conn.execute(text(f"SELECT created_by FROM tests WHERE test_name = {test}")).first()
+    creator = "".join(creator)
+    questions = conn.execute(text(f"SELECT question FROM test_questions WHERE test_name = {test}"))
+    test = conn.execute(text(f"SELECT * FROM tests WHERE test_name = {test}")).first()
+    return render_template("update.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), questions=questions, test=test, creator=creator)
+
+
+@app.route("/update_tests/<test>", methods=["POST"])
+def update(test):
+    try:
+        num_question = conn.execute(text(f"SELECT num_questions FROM tests WHERE test_name = {test}")).first()
+        questions = conn.execute(text(f"SELECT question FROM test_questions WHERE test_name = {test}")).all()
+        conn.execute(text(f"UPDATE tests SET test_name = '{request.form.get('test-name')}' WHERE test_name = {test}"))
+        for i in range(0, num_question[0]):
+            conn.execute(text(f"UPDATE test_questions SET question = '{request.form.get(f'question-{i + 1}')}' WHERE question = '{''.join(questions[i])}' AND test_name = {test}"))
+        conn.execute(text(f"UPDATE test_questions SET test_name = '{request.form.get('test-name')}' WHERE test_name = {test}"))
+        conn.commit()
+        return render_template("index.html", loggedin=session.get("username"), success="Test updated successfully!")
+    except Exception as e:
+        error = e.orig.args[1]
+        print(error)
+        return render_template("create_test.html", error="Unexpected error encountered", acct_type=session.get("acct_type"), loggedin=session.get("username"))
+
 
 
 @app.route("/create_new_test", methods=["GET"])
@@ -127,6 +149,24 @@ def create_test():
         error = e.orig.args[1]
         print(error)
         return render_template("create_test.html", error=error)
+
+
+@app.route("/delete/<test>", methods=["GET"])
+def delete_test_template(test):
+    test = conn.execute(text(f"SELECT * FROM tests WHERE test_name = {test}")).first()
+    return render_template("delete_test.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), test=test)
+
+
+@app.route("/delete/<test>", methods=["POST"])
+def delete_test(test):
+    if request.form.get("radio") == "delete":
+        conn.execute(text(f"DELETE FROM tests WHERE test_name = {test}"))
+        conn.execute(text(f"DELETE FROM test_questions WHERE test_name = {test}"))
+        conn.commit()
+        return render_template("index.html", loggedin=session.get("username"), success="Test deleted successfully")
+    else:
+        tests = conn.execute(text("SELECT * FROM tests"))
+        return render_template("manage_tests.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), tests=tests, success=None)
 
 
 if __name__ == "__main__":
