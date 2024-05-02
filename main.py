@@ -7,7 +7,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 #Needs password below
-conn_str = "mysql://root:localUnkers1!@localhost/160finaldb"
+conn_str = "mysql://root:PASSWORD@localhost/160finaldb"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
