@@ -162,11 +162,6 @@ main .login-form {
     justify-content: center;
 }
 
-main .test-form {
-    max-height: 500px;
-    overflow: scroll;
-}
-
 main .form-info-questions {
     display: flex;
     flex-direction: column;
@@ -218,8 +213,7 @@ form .question {
     overflow: scroll;
 }
 
-.test-card a {
-    color: black;
+.test-card p{
     margin: 20px;
 }
 
@@ -232,3 +226,12 @@ form .question {
     margin: 20px;
     padding: 10px;
 }
+
+.delete-card {
+    justify-content: center;
+    align-items: center;
+}
+
+.delete-card input[type="submit"] {
+    width: 100px;
+} 
