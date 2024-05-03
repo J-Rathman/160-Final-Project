@@ -8,7 +8,7 @@ function updateForm(event) {
     for (let i = 0; i < numQuestions; i++) {
         let newLabel = document.createElement("p");
         newLabel.textContent = "Enter question " + (i + 1);
-        newLabel.classList.add("question");
+        newLabel.classList.add("new-test-question");
         let newQuestion = document.createElement("input");
         newQuestion.type = "text";
         newQuestion.setAttribute("required", "");

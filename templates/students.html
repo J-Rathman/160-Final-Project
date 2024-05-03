@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {% block body %}
-    {% if acct_type == 'teacher' %}
-        
-    {% else %}
-        <p class="error-header">Access denied</p>
-    {% endif %}
+    <main>
+        {% if acct_type == 'teacher' %}
+            <div class="test-card">
+                {% for student in students %}
+                    <a href="#">{{ student['username'] }}</a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="error-header">Access denied</p>
+        {% endif %}
+    </main>
 {% endblock %}

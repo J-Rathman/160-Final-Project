@@ -86,8 +86,11 @@ def get_test_taking_template():
 
 @app.route("/tests/<test>")
 def take_test(test):
-    questions = conn.execute(text(f"SELECT question FROM test_questions WHERE test_name = {test}"))
-    return render_template("testing.html", test=test, questions=questions, loggedin=session.get("username"), acct_type=session.get("acct_type"))
+    if conn.execute(text(f"SELECT student_name FROM test_results WHERE test_name = {test}")).all():
+        return render_template("index.html", loggedin=session.get("username"), success=f"You've already taken {test}")
+    else:
+        questions = conn.execute(text(f"SELECT question FROM test_questions WHERE test_name = {test}"))
+        return render_template("testing.html", test=test, questions=questions, loggedin=session.get("username"), acct_type=session.get("acct_type"))
 
 
 @app.route("/tests/<test>", methods=["POST"])
@@ -130,7 +133,6 @@ def update(test):
         error = e.orig.args[1]
         print(error)
         return render_template("create_test.html", error="Unexpected error encountered", acct_type=session.get("acct_type"), loggedin=session.get("username"))
-
 
 
 @app.route("/create_new_test", methods=["GET"])
@@ -176,7 +178,8 @@ def delete_test(test):
 
 @app.route("/manage_grades", methods=["GET"])
 def get_grades_template():
-    return render_template("students.html", loggedin=session.get("username"), acct_type=session.get("acct_type"))
+    students = conn.execute(text("SELECT * FROM accounts WHERE acct_type = 'student'")).all()
+    return render_template("students.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), students=students)
 
 
 if __name__ == "__main__":
