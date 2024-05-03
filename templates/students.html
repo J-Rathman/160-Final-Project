@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block body %}
+    {% if acct_type == 'teacher' %}
+        
+    {% else %}
+        <p class="error-header">Access denied</p>
+    {% endif %}
+{% endblock %}
