@@ -7,7 +7,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 #Needs password below
-conn_str = "mysql://root:PASSWORD@localhost/160finaldb"
+conn_str = "mysql://root:localUnkers1!@localhost/160finaldb"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -80,11 +80,6 @@ def register():
 
 @app.route("/tests", methods=["GET"])
 def get_test_taking_template():
-    if session.get("username"):
-        acct_type = conn.execute(text(f"SELECT acct_type FROM accounts WHERE username = '{session.get('username')}'")).first()
-        acct_type = "".join(acct_type)
-    else:
-        acct_type = None
     tests = conn.execute(text("SELECT * FROM tests"))
     return render_template("test_list.html", loggedin=session.get("username"), tests=tests, acct_type=session.get("acct_type"))
 
@@ -93,6 +88,16 @@ def get_test_taking_template():
 def take_test(test):
     questions = conn.execute(text(f"SELECT question FROM test_questions WHERE test_name = {test}"))
     return render_template("testing.html", test=test, questions=questions, loggedin=session.get("username"), acct_type=session.get("acct_type"))
+
+
+@app.route("/tests/<test>", methods=["POST"])
+def submit_test(test):
+    num_questions = conn.execute(text(f"SELECT num_questions FROM tests WHERE test_name = {test}")).first()
+    for i in range(0, num_questions[0]):
+        conn.execute(text(f"INSERT INTO test_results (student_name, test_name, question_num, answer)"
+                          f"VALUES ('{session.get('username')}', {test}, {i + 1}, '{request.form.get(f'question-{i + 1}')}')"))
+    conn.commit()
+    return render_template("index.html", loggedin=session.get("username"), success="Results recorded")
 
 
 @app.route("/manage_tests", methods=["GET"])
@@ -167,6 +172,11 @@ def delete_test(test):
     else:
         tests = conn.execute(text("SELECT * FROM tests"))
         return render_template("manage_tests.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), tests=tests, success=None)
+
+
+@app.route("/manage_grades", methods=["GET"])
+def get_grades_template():
+    return render_template("students.html", loggedin=session.get("username"), acct_type=session.get("acct_type"))
 
 
 if __name__ == "__main__":
