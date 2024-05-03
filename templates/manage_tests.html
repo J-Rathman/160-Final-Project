@@ -1,10 +1,11 @@
 {% extends "base.html" %}
 {% block body %}
     <main>
-        <h1 class="form-header">Manage tests</h1>
+        <h1 class="form-header">Manage tests/grades</h1>
         <div class="test-card">
             {% if acct_type == 'teacher' %}
                 <button onclick="window.location.href='/create_new_test'">Create a new test</button>
+                <button onclick="window.location.href='/manage_grades'">View/grade student results</button>
                 {% for test in tests %}
                     <p><a href="/update_tests/'{{ test['test_name'] }}'">[Modify]</a> <a href="/delete/'{{ test['test_name'] }}'">[Delete]</a> {{ test['test_name'] }} - Posted by: {{ test['created_by'] }} on {{ test['date_created'] }}</p>             
                 {% endfor %}

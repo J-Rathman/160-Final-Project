@@ -31,6 +31,7 @@ header {
     align-items: center;
     z-index: 3;
     border-bottom: 1px solid white;
+    line-height: 5%;
 }
 
 header .header_links {
@@ -177,7 +178,9 @@ input[type="text"], input[type="submit"], input[type="password"], input[type="nu
 textarea {
     margin: 0 1em;
     padding: 0 5px;
-    min-height: 60px;
+    min-height: 40px;
+    max-height: 80px;
+    max-width: 1000px;
 }
 
 input[type="submit"]:hover, input[type="radio"]:hover, .radios label:hover {
@@ -198,7 +201,7 @@ form .radios {
 
 
 form .question {
-    padding: 16px;
+    padding: 10px 0;
 }
 
 .test-card {
@@ -208,9 +211,9 @@ form .question {
     background-color: white;
     border-left: 1px solid black;
     border-right: 1px solid black;
-    height: 400px;
+    min-height: 400px;
     margin: 5%;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 .test-card p{
@@ -235,3 +238,8 @@ form .question {
 .delete-card input[type="submit"] {
     width: 100px;
 } 
+
+.test-card a {
+    color: black;
+    margin: 12px;
+}
