@@ -6,7 +6,7 @@
             {% if acct_type == 'student' %}
                 {% if tests %}
                     {% for test in tests %}
-                        <a href="/tests/'{{ test['test_name'] }}'">{{ test['test_name'] }} - Posted by: {{ test['created_by'] }} on {{ test['date_created'] }}</a>                            
+                        <a href="/tests/{{ test['test_name'] }}">{{ test['test_name'] }} - Posted by: {{ test['created_by'] }} on {{ test['date_created'] }}</a>                            
                     {% endfor %}
                 {% else %}
                     <h2>No tests available</h2>

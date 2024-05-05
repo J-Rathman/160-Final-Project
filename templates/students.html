@@ -4,7 +4,7 @@
         {% if acct_type == 'teacher' %}
             <div class="test-card">
                 {% for student in students %}
-                    <a href="#">{{ student['username'] }}</a>
+                    <p>{{ student['username'] }} <a href="/students/{{ student['username'] }}">View answers for this student</a></p>
                 {% endfor %}
             </div>
         {% else %}

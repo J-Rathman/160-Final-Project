@@ -3,7 +3,7 @@
     <main>
         {% if loggedin == creator %}
         <form method="POST" class="test-card">
-            <input type="text" placeholder="Test name..." class="question" name="test-name" value="{{ test['test_name'] }}" required>
+            <input type="text" placeholder="Test name..." class="question" name="test-name" value="{{ test['test_name'] }}" required autocomplete="off">
             {% for question in questions %}
                 <p class="question">{{ loop.index }}.</p>
                 <textarea placeholder="Question..." name="question-{{ loop.index }}" required autocomplete="off">{{ question|join('') }}</textarea>
