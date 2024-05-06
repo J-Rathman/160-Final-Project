@@ -6,7 +6,7 @@
                 <h1 class="form-header">Tests taken by {{ student }}</h1>
                 <div class="test-card">
                     {% for test in tests_taken|unique %}
-                        <p>{{ test|join('') }} <a href="/students/{{ student }}/{{ test|join('') }}">View results for this test</a></p>                   
+                        <p>{{ test|join('') }} <a href="/students/{{ student }}/{{ test|join('') }}">View answers for this test</a></p>                   
                     {% endfor %}
                 </div>
             {% elif results %}

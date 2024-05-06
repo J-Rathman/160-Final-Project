@@ -7,7 +7,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 #Needs password below
-conn_str = "mysql://root:PASSWORD/160finaldb"
+conn_str = "mysql://root:PASSWORD@localhost/160finaldb"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -173,7 +173,13 @@ def delete_test(test):
 @app.route("/manage_grades", methods=["GET"])
 def get_grades_template():
     students = conn.execute(text("SELECT * FROM accounts WHERE acct_type = 'student'")).all()
-    return render_template("students.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), students=students)
+    return render_template("students.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), students=students, grades=None)
+
+
+@app.route("/students/grades/<student>", methods=["GET"])
+def get_student_grades(student):
+    grades = conn.execute(text(f"SELECT * FROM grades WHERE student_name = '{student}'")).all()
+    return render_template("students.html", loggedin=session.get("username"), acct_type=session.get("acct_type"), grades=grades)
 
 
 @app.route("/students/<student>", methods=["GET"])

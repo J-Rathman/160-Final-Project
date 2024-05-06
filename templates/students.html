@@ -3,9 +3,15 @@
     <main>
         {% if acct_type == 'teacher' %}
             <div class="test-card">
-                {% for student in students %}
-                    <p>{{ student['username'] }} <a href="/students/{{ student['username'] }}">View answers for this student</a></p>
-                {% endfor %}
+                {% if grades %}
+                    {% for grade in grades %}
+                        <p>{{ grade['test_name'] }} - Score: {{ grade['grade'] }} - Posted by {{ grade['graded_by'] }} on {{ grade['time_graded'] }}</p>
+                    {% endfor %}
+                {% else %}
+                    {% for student in students %}
+                        <p>{{ student['username'] }} <a href="/students/{{ student['username'] }}">View submissions</a> <a href="/students/grades/{{ student['username'] }}">View grades</a></p>
+                    {% endfor %}
+                {% endif %}
             </div>
         {% else %}
             <p class="error-header">Access denied</p>
