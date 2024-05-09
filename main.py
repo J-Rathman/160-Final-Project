@@ -7,7 +7,7 @@ app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 #Needs password below
-conn_str = "mysql://root:PASSWORD@localhost/160finaldb"
+conn_str = "mysql://root:localUnkers1!@localhost/160finaldb"
 engine = create_engine(conn_str, echo=True)
 conn = engine.connect()
 
@@ -68,7 +68,7 @@ def register():
             conn.commit()
             session["username"] = request.form.get("username")
             session["acct_type"] = request.form.get("radio")
-            return render_template("register.html", error=None, success="Account created successfully!", loggedin=session.get("username"))
+            return render_template("index.html", success="Account created successfully!", loggedin=session.get("username"))
         except Exception:
             return render_template("register.html", error="Unexpected error encountered", succes=None)
     else:

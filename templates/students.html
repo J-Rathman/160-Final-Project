@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     <main>
-        {% if acct_type == 'teacher' %}
+        {% if acct_type == 'teacher' or acct_type == 'admin' %}
             <div class="test-card">
                 {% if grades %}
                     {% for grade in grades %}

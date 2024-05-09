@@ -5,7 +5,7 @@
         {% if error %}
             <p class="error-header">{{ error }}</p>
         {% else %}
-            {% if acct_type == 'teacher' %}
+            {% if acct_type == 'teacher' or acct_type == 'admin' %}
             <form class="test-form new-test-form">
                 <div class="form-info-questions">
                     <p class="new-test-question">Name of test</p>

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     <main>
-        {% if loggedin == test['created_by'] %}
+        {% if loggedin == test['created_by'] or acct_type == 'admin' %}
             <form method="POST" class="test-card delete-card">
                 <p>WARNING - This action cannot be undone</p>
                 <div class="radios">
@@ -13,7 +13,7 @@
                 </div>
             </form>
         {% else %}
-            <p class="error-header">Only the test creator can delete this test</p>
+            <p class="error-header">Only the test creator or admins can delete this test</p>
         {% endif %}
     </main>
 {% endblock %}
