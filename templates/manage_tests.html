@@ -7,7 +7,7 @@
             <h1 class="form-header">Manage tests/grades</h1>
         {% endif %}
         <div class="test-card">
-            {% if acct_type == 'teacher' %}
+            {% if acct_type == 'teacher' or acct_type == 'admin' %}
                 <button onclick="window.location.href='/create_new_test'">Create a new test</button>
                 <button onclick="window.location.href='/manage_grades'">View/grade student results</button>
                 {% for test in tests %}

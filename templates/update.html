@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     <main>
-        {% if loggedin == creator %}
+        {% if loggedin == creator or acct_type == 'admin' %}
         <form method="POST" class="test-card">
             <input type="text" placeholder="Test name..." class="question" name="test-name" value="{{ test['test_name'] }}" required autocomplete="off">
             {% for question in questions %}

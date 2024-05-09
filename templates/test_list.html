@@ -3,7 +3,7 @@
     <main>
         <h1 class="form-header">Choose a test to take</h1>
         <div class="test-card">
-            {% if acct_type == 'student' %}
+            {% if acct_type == 'student' or acct_type == 'admin' %}
                 {% if tests %}
                     {% for test in tests %}
                         <a href="/tests/{{ test['test_name'] }}">{{ test['test_name'] }} - Posted by: {{ test['created_by'] }} on {{ test['date_created'] }}</a>                            

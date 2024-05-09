@@ -68,7 +68,7 @@ def register():
             conn.commit()
             session["username"] = request.form.get("username")
             session["acct_type"] = request.form.get("radio")
-            return render_template("register.html", error=None, success="Account created successfully!", loggedin=session.get("username"))
+            return render_template("index.html", success="Account created successfully!", loggedin=session.get("username"))
         except Exception:
             return render_template("register.html", error="Unexpected error encountered", succes=None)
     else:

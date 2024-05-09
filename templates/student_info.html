@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
     <main>
-        {% if acct_type == 'teacher' %}
+        {% if acct_type == 'teacher' or acct_type == 'admin' %}
             {% if tests_taken %}
                 <h1 class="form-header">Tests taken by {{ student }}</h1>
                 <div class="test-card">
